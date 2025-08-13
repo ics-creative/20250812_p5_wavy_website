@@ -2,12 +2,12 @@ import p5 from "p5";
 
 
 const sketch = (p: p5) => {
-    const iterStep = 60;
-    const titleSize = 180;
+    const ITER_STEP = 60;
+    const TITLE_TEXT_SIZE = 180;
     let drawCol, bgCol, textCol, textFillCol, textEdgeCol, cursorCol;
     let titleText = "WAVY.";
     let titleWidth = 0;
-    let mouseDistThreshold = p.windowWidth/6;
+    let MOUSE_DIST_THRESHOLD = p.windowWidth/6;
     let isWavy = true;
 
     // クリックによって色やテキストを切り替える
@@ -52,8 +52,7 @@ const sketch = (p: p5) => {
     }
 
     p.setup = () => {
-        // let canvas = p.createCanvas(p.windowWidth, p.windowHeight);
-        let canvas = p.createCanvas(p.windowWidth, p.windowHeight);
+        const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
         canvas.parent('canvas-container');
         p.noCursor();
 
@@ -65,7 +64,7 @@ const sketch = (p: p5) => {
         cursorCol = p.color(255, 0, 0, 255);
 
         // テキストのスタイル設定
-        p.textSize(titleSize);
+        p.textSize(TITLE_TEXT_SIZE);
         p.textFont('arial');
         textFillCol = p.color(200, 0, 100, 40);
         p.textStyle(p.BOLDITALIC);
@@ -79,12 +78,12 @@ const sketch = (p: p5) => {
         p.fill(drawCol);
 
         //波の描画
-        drawWave(iterStep, mouseDistThreshold);
+        drawWave(ITER_STEP, MOUSE_DIST_THRESHOLD);
         // テキストの描画
         p.strokeWeight(2);
         p.stroke(textEdgeCol);
         p.fill(textCol);
-        p.text(titleText, 0, p.height - titleSize/4);
+        p.text(titleText, 0, p.height - TITLE_TEXT_SIZE/4);
 
         // マウスカーソルの描画
         p.stroke(cursorCol);
