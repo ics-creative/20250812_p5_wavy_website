@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
+/*リセットCSS*/
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/*ヘッダー*/
+.header {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    padding: 24px;
+}
+
+.header-title {
+    font-size: 32px;
+}
+
+.header-navigation {
+
+}
+
+.header-navigation__list {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 4px 8px;
+}
+.header-navigation__item {
+    color: white;
+}
+
+.header-navigation__link {
+    font-size: 18px;
+    color: white;
+}
+
+/*キャンバス*/
+.canvas-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

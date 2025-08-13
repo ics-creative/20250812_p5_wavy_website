@@ -1,0 +1,30 @@
+{
+  "name": "20250812_p5_wavy_website",
+  "version": "1.0.0",
+  "description": "記事「p5.jsの活用事例」用デモ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ics-creative/20250812_p5_wavy_website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ics-creative/20250812_p5_wavy_website/issues"
+  },
+  "homepage": "https://github.com/ics-creative/20250812_p5_wavy_website#readme",
+  "devDependencies": {
+    "vite": "^7.1.2"
+  },
+  "dependencies": {
+    "@types/p5": "^1.7.6",
+    "p5": "^2.0.4"
+  }
+}
