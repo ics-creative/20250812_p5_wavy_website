@@ -40,30 +40,27 @@ body {
     font-size: 32px;
 }
 
-.header-navigation {
+.navigation {
 
 }
 
-.header-navigation__list {
+.navigation__list {
     display: flex;
     justify-content: space-between;
     gap: 24px;
     padding: 4px 8px;
 }
-.header-navigation__item {
+.navigation__item {
     color: white;
 }
 
-.header-navigation__link {
+.navigation__link {
     font-size: 18px;
     color: white;
 }
 
-/*キャンバス*/
-.canvas-container {
+/* キャンバスラッパーに関するスタイル */
+#canvas-container {
     width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
 }

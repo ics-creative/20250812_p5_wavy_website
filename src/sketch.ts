@@ -1,9 +1,10 @@
 import p5 from "p5";
 
+const ITER_STEP = 60;
+const TITLE_TEXT_SIZE = 180;
+const ANIMATION_SPEED_RATIO = 0.03;
 
 const sketch = (p: p5) => {
-    const ITER_STEP = 60;
-    const TITLE_TEXT_SIZE = 180;
     let mouseDistThreshold;
     let drawCol, bgCol, textCol, textFillCol, textEdgeCol, cursorCol;
     let titleText = "WAVY.";
@@ -27,20 +28,19 @@ const sketch = (p: p5) => {
     }
 
     const drawWave = (step: number, threshold: number, waveAmp: number) => {
-        const tRatio = 0.03;
         for (let j = step/3; j < p.height; j+=step) {
             p.beginShape();
             for (let i = -step; i < p.width + step*2; i+=step) {
                 const x = i;
                 const phaseDelay = (i + j) / 2;
 
-                let y = waveAmp * p.sin((p.frameCount - phaseDelay) * tRatio) + j;
+                let y = waveAmp * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) + j;
                 const mouseDist = p.dist(p.mouseX, p.mouseY, x, y);
                 if (mouseDist < threshold) {
                     if (isWavy) {
                         y = j;
                     } else {
-                        y = step / 3 * p.sin((p.frameCount - phaseDelay) * tRatio) + j;
+                        y = step / 3 * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) + j;
                     }
                 }
                 p.vertex(x, y);
