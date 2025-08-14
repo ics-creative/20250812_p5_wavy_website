@@ -30,7 +30,7 @@ const sketch = (p: p5) => {
     const drawWave = (step: number, threshold: number, waveAmp: number) => {
         for (let j = step/3; j < p.height; j+=step) {
             p.beginShape();
-            for (let i = -step; i < p.width + step*2; i+=step) {
+            for (let i = -step; i < p.width + step; i+=step) {
                 const x = i;
                 const phaseDelay = (i + j) / 2;
 
