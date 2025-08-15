@@ -5,10 +5,13 @@ const TITLE_TEXT_SIZE = 180;
 const ANIMATION_SPEED_RATIO = 0.03;
 
 const sketch = (p: p5) => {
-    let mouseDistThreshold;
-    let drawCol, bgCol, textCol, textFillCol, textEdgeCol, cursorCol;
+    let bgCol: p5.Color;
+    let textEdgeCol: p5.Color;
+    let textCol: p5.Color;
+    let mouseDistThreshold = 0;
+    let drawCol: p5.Color;
+    let cursorCol: p5.Color;
     let titleText = "WAVY.";
-    let titleWidth;
     let isWavy = true;
     let waveAmp = ITER_STEP / 3;
 
@@ -21,7 +24,7 @@ const sketch = (p: p5) => {
             waveAmp = ITER_STEP / 3;
         } else {
             drawCol = p.color(200, 0, 50, 40);
-            cursorCol = p.color(100, 0, 250);
+            cursorCol = p.color(100, 0, 250, 255);
             titleText = "SILENCE.";
             waveAmp = 2;
         }
@@ -58,17 +61,17 @@ const sketch = (p: p5) => {
         setModalParams(isWavy);
 
         // 色の設定
-        bgCol = p.color(0, 8);
         textEdgeCol = p.color(255);
         textCol = p.color(180, 200);
-        textFillCol = p.color(200, 0, 100, 40);
+        drawCol = p.color(50, 0, 200, 40);
+        cursorCol = p.color(255, 0, 0, 255);
+        bgCol = p.color(0, 8);
 
         // テキストのスタイル設定
         p.textSize(TITLE_TEXT_SIZE);
         p.textFont('arial');
         p.textStyle(p.BOLDITALIC);
         p.textAlign(p.LEFT, p.BOTTOM);
-        titleWidth = p.textWidth(titleText);
     };
 
     p.draw = () => {
