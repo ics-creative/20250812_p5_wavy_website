@@ -3,7 +3,6 @@ import p5 from "p5";
 const ITER_STEP = 60;
 const MIN_TITLE_TEXT_SIZE = 24;
 const MAX_TITLE_TEXT_SIZE = 180;
-const ANIMATION_SPEED_RATIO = 0.03;
 
 const sketch = (p: p5) => {
     let bgCol: p5.Color;
@@ -32,7 +31,11 @@ const sketch = (p: p5) => {
         }
     }
 
+    /**
+     * ポイント1. 三角関数を使った周期的なアニメーション
+     */
     const drawWave = (step: number, threshold: number, waveAmp: number) => {
+        const ANIMATION_SPEED_RATIO = 0.03;
         for (let j = step/3; j < p.height; j+=step) {
             p.beginShape();
             for (let i = -step; i < p.width + step; i+=step) {
@@ -92,12 +95,18 @@ const sketch = (p: p5) => {
         p.fill(textCol);
         p.text(titleText, titleTextSize / 6, p.height - titleTextSize / 6);
 
-        // マウスカーソルの描画
+        /**
+         * ポイント2. カーソル移動によるエフェクトの変化
+         */
         p.stroke(cursorCol);
         p.strokeWeight(2);
         p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
     };
 
+
+    /**
+     * ポイント4. 画面サイズ拡縮時の調整
+     */
     p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
         mouseDistThreshold = p.windowWidth / 6;
@@ -105,6 +114,9 @@ const sketch = (p: p5) => {
         p.textSize(currentTextSize);
     }
 
+    /**
+     * ポイント3. クリックによるシーン切り替え
+     */
     p.mouseReleased = () => {
         isWavy = !isWavy;
         setModalParams(isWavy);
