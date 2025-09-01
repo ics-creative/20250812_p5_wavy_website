@@ -1,7 +1,8 @@
 import p5 from "p5";
 
 const ITER_STEP = 60;
-const TITLE_TEXT_SIZE = 180;
+const MIN_TITLE_TEXT_SIZE = 24;
+const MAX_TITLE_TEXT_SIZE = 180;
 const ANIMATION_SPEED_RATIO = 0.03;
 
 const sketch = (p: p5) => {
@@ -14,6 +15,7 @@ const sketch = (p: p5) => {
     let titleText = "WAVY.";
     let isWavy = true;
     let waveAmp = ITER_STEP / 3;
+    let titleTextSize = 180;
 
     // waveStateの変更に応じて色やテキストを設定する関数
     const setModalParams = (waveState: boolean) => {
@@ -68,7 +70,8 @@ const sketch = (p: p5) => {
         bgCol = p.color(0, 8);
 
         // テキストのスタイル設定
-        p.textSize(TITLE_TEXT_SIZE);
+        const currentTextSize = p.constrain(p.windowWidth / 6, MIN_TITLE_TEXT_SIZE, MAX_TITLE_TEXT_SIZE);
+        p.textSize(currentTextSize);
         p.textFont('arial');
         p.textStyle(p.BOLDITALIC);
         p.textAlign(p.LEFT, p.BOTTOM);
@@ -87,7 +90,7 @@ const sketch = (p: p5) => {
         p.strokeWeight(2);
         p.stroke(textEdgeCol);
         p.fill(textCol);
-        p.text(titleText, TITLE_TEXT_SIZE / 6, p.height - TITLE_TEXT_SIZE / 6);
+        p.text(titleText, titleTextSize / 6, p.height - titleTextSize / 6);
 
         // マウスカーソルの描画
         p.stroke(cursorCol);
@@ -98,6 +101,8 @@ const sketch = (p: p5) => {
     p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
         mouseDistThreshold = p.windowWidth / 6;
+        const currentTextSize = p.constrain(p.windowWidth / 6, MIN_TITLE_TEXT_SIZE, MAX_TITLE_TEXT_SIZE);
+        p.textSize(currentTextSize);
     }
 
     p.mouseReleased = () => {
