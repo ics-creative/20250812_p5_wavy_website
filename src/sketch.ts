@@ -1,8 +1,8 @@
 import p5 from "p5";
 
 const ITER_STEP = 60;
-const MIN_THRESHOLD = 20;
-const MAX_THRESHOLD = 300;
+const MIN_THRESHOLD = 64;
+const MAX_THRESHOLD = 240;
 const MIN_TITLE_TEXT_SIZE = 24;
 const MAX_TITLE_TEXT_SIZE = 180;
 
@@ -15,7 +15,8 @@ const sketch = (p: p5) => {
     let cursorCol: p5.Color;
     let titleText = "WAVY.";
     let isWavy = true;
-    let waveAmp = ITER_STEP / 3;
+    let defaultWaveAmp = ITER_STEP / 2;
+    let effectWaveAmp = 0;
     let titleTextSize = 180;
 
     // waveStateの変更に応じて色やテキストを設定する関数
@@ -24,34 +25,35 @@ const sketch = (p: p5) => {
             drawCol = p.color(50, 0, 200, 40);
             cursorCol = p.color(255, 0, 0, 255);
             titleText = "WAVY.";
-            waveAmp = ITER_STEP / 3;
+            defaultWaveAmp = ITER_STEP / 2;
+            effectWaveAmp = 0;
         } else {
             drawCol = p.color(200, 0, 50, 40);
             cursorCol = p.color(100, 0, 250, 255);
             titleText = "SILENCE.";
-            waveAmp = 2;
+            defaultWaveAmp = 0;
+            effectWaveAmp = ITER_STEP / 2;
         }
     }
 
     /**
      * ポイント1. 三角関数を使った周期的なアニメーション
      */
-    const drawWave = (step: number, threshold: number, waveAmp: number) => {
-        const ANIMATION_SPEED_RATIO = 0.03;
+    const drawWave = (step: number, threshold: number, defaultWaveAmp: number, effectWaveAmp: number) => {
+        const ANIMATION_SPEED_RATIO = 0.02;
         for (let j = step/3; j < p.height; j+=step) {
             p.beginShape();
-            for (let i = -step; i < p.width + step; i+=step) {
+            for (let i = -step; i < p.width + step; i+=step/4) {
                 const x = i;
                 const phaseDelay = (i + j) / 2;
 
-                let y = waveAmp * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) + j;
+                let y = defaultWaveAmp * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) + j;
+                /**
+                 * ポイント2. マウス操作によるエフェクトの変化：距離
+                 */
                 const mouseDist = p.dist(p.mouseX, p.mouseY, x, y);
                 if (mouseDist < threshold) {
-                    if (isWavy) {
-                        y = j;
-                    } else {
-                        y = step / 3 * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) + j;
-                    }
+                    y = effectWaveAmp * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) + j;
                 }
                 p.vertex(x, y);
             }
@@ -91,7 +93,7 @@ const sketch = (p: p5) => {
         p.fill(drawCol);
 
         //波の描画
-        drawWave(ITER_STEP, mouseDistThreshold, waveAmp);
+        drawWave(ITER_STEP, mouseDistThreshold, defaultWaveAmp, effectWaveAmp);
 
         // テキストの描画
         p.strokeWeight(2);
@@ -100,7 +102,7 @@ const sketch = (p: p5) => {
         p.text(titleText, titleTextSize / 6, p.height - titleTextSize / 6);
 
         /**
-         * ポイント2. カーソル移動によるエフェクトの変化
+         * ポイント2. マウス操作によるエフェクトの変化：カーソル
          */
         p.stroke(cursorCol);
         p.strokeWeight(2);
@@ -109,7 +111,7 @@ const sketch = (p: p5) => {
 
 
     /**
-     * ポイント4. 画面サイズ拡縮時の調整
+     * ポイント3. 画面サイズ拡縮時の調整
      */
     p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
@@ -120,7 +122,7 @@ const sketch = (p: p5) => {
     }
 
     /**
-     * ポイント3. クリックによるシーン切り替え
+     * ポイント2. マウス操作によるエフェクトの変化：クリック
      */
     p.mouseReleased = () => {
         isWavy = !isWavy;
