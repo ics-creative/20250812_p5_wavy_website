@@ -1,6 +1,8 @@
 import p5 from "p5";
 
 const ITER_STEP = 60;
+const MIN_THRESHOLD = 20;
+const MAX_THRESHOLD = 300;
 const MIN_TITLE_TEXT_SIZE = 24;
 const MAX_TITLE_TEXT_SIZE = 180;
 
@@ -62,7 +64,7 @@ const sketch = (p: p5) => {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
         canvas.parent('canvas-container');
         p.noCursor();
-        mouseDistThreshold = p.windowWidth / 6;
+        mouseDistThreshold = p.constrain(p.windowWidth / 6, MIN_THRESHOLD, MAX_THRESHOLD);
         setModalParams(isWavy);
 
         // 色の設定
@@ -70,7 +72,7 @@ const sketch = (p: p5) => {
         textCol = p.color(180, 200);
         drawCol = p.color(50, 0, 200, 40);
         cursorCol = p.color(255, 0, 0, 255);
-        bgCol = p.color(0, 8);
+        bgCol = p.color(0, 0, 0,8);
 
         // テキストのスタイル設定
         const currentTextSize = p.constrain(p.windowWidth / 6, MIN_TITLE_TEXT_SIZE, MAX_TITLE_TEXT_SIZE);
@@ -78,6 +80,8 @@ const sketch = (p: p5) => {
         p.textFont('arial');
         p.textStyle(p.BOLDITALIC);
         p.textAlign(p.LEFT, p.BOTTOM);
+
+        p.background(0);
     };
 
     p.draw = () => {
@@ -109,7 +113,8 @@ const sketch = (p: p5) => {
      */
     p.windowResized = () => {
         p.resizeCanvas(p.windowWidth, p.windowHeight);
-        mouseDistThreshold = p.windowWidth / 6;
+        p.background(0);
+        mouseDistThreshold = p.constrain(p.windowWidth / 6, MIN_THRESHOLD, MAX_THRESHOLD);
         const currentTextSize = p.constrain(p.windowWidth / 6, MIN_TITLE_TEXT_SIZE, MAX_TITLE_TEXT_SIZE);
         p.textSize(currentTextSize);
     }
