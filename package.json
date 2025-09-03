@@ -12,11 +12,11 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
+    "@types/p5": "^1.7.6",
     "typescript": "^5.9.2",
     "vite": "^7.1.2"
   },
   "dependencies": {
-    "@types/p5": "^1.7.6",
-    "p5": "^2.0.4"
+    "p5": "^1.11.10"
   }
 }

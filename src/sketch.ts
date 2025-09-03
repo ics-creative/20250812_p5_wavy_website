@@ -123,7 +123,7 @@ const sketch = (p: p5) => {
     /**
      * ポイント2. マウス操作によるエフェクトの変化：カーソル
      */
-    p.stroke(cursorCol);
+    p.stroke(cursorCol)
     p.strokeWeight(2);
     p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
   };

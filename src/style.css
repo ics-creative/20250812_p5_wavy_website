@@ -64,7 +64,6 @@ body {
   height: 100%;
   canvas {
     user-select: none;
-    pointer-events: none;
     -webkit-user-select: none;
   }
 }
