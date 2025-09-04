@@ -126,7 +126,6 @@ const sketch = (p: p5) => {
      */
     p.stroke(cursorCol);
     p.strokeWeight(2);
-
     p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
   };
 
