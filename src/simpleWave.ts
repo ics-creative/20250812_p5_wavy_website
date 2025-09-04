@@ -2,7 +2,7 @@ import p5 from "p5";
 
 const sketch = (p: p5) => {
   p.setup = () => {
-    p.createCanvas(960, 540);
+    p.createCanvas(p.windowWidth, p.windowHeight);
     p.stroke(255);
     p.noFill();
   };

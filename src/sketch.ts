@@ -126,23 +126,6 @@ const sketch = (p: p5) => {
      */
     p.stroke(cursorCol);
     p.strokeWeight(2);
-    // const cx = (p.mouseX + p.pmouseX) / 2;
-    // const cy = (p.mouseY + p.pmouseY) / 2;
-
-    // p.beginShape();
-    // p.vertex(p.pmouseX, p.pmouseY);
-    // p.quadraticVertex(cx, cy, p.mouseX, p.mouseY);
-    // p.endShape();
-
-    // const vx = p.mouseX - p.pmouseX;
-    // const vy = p.mouseY - p.pmouseY;
-    //
-    // p.beginShape();
-    // p.curveVertex(p.pmouseX - vx, p.pmouseY - vy);
-    // p.curveVertex(p.pmouseX, p.pmouseY);
-    // p.curveVertex(p.mouseX, p.mouseY);
-    // p.curveVertex(p.mouseX + vx, p.mouseY + vy);
-    // p.endShape();
 
     p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
   };
