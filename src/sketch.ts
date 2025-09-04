@@ -18,19 +18,21 @@ const sketch = (p: p5) => {
   let defaultWaveAmp = ITER_STEP / 2;
   let effectWaveAmp = 0;
   let titleTextSize = 180;
+  let mousePosAry: p5.Vector[] = [];
+  let stalkerPos: p5.Vector = p.createVector(0, 0);
 
   // waveStateの変更に応じて色やテキストを設定する関数
   const setModalParams = (waveState: boolean) => {
     if (waveState) {
-      drawCol = p.color(50, 0, 200, 40);
-      cursorCol = p.color(255, 0, 0, 255);
+      drawCol = p.color(50, 50, 200, 40);
+      bgCol = p.color(0, 8);
       titleText = "WAVY.";
       defaultWaveAmp = ITER_STEP / 2;
       effectWaveAmp = 0;
     } else {
-      drawCol = p.color(200, 0, 50, 40);
-      cursorCol = p.color(100, 0, 250, 255);
-      titleText = "SILENCE.";
+      drawCol = p.color(10, 100, 20, 40);
+      bgCol = p.color(0, 8);
+      titleText = "CALM.";
       defaultWaveAmp = 0;
       effectWaveAmp = ITER_STEP / 2;
     }
@@ -46,26 +48,25 @@ const sketch = (p: p5) => {
     effectWaveAmp: number,
   ) => {
     const ANIMATION_SPEED_RATIO = 0.02;
-    for (let j = step / 3; j < p.height; j += step) {
+
+    // stepずつy軸の方向に走査
+    for (let j = 0; j < p.height; j += step) {
       p.beginShape();
-      for (let i = -step; i < p.width + step; i += step / 4) {
+      // step/4ずつx軸の正方向に走査
+      for (let i = 0; i < p.width; i += step / 4) {
         const x = i;
         const phaseDelay = (i + j) / 2;
-
-        let y =
-          defaultWaveAmp *
+        // マウスと基線の距離
+        const d = p.dist(p.mouseX, p.mouseY, x, j);
+        // 距離に応じて振幅を変化
+        let t = p.constrain(d / threshold, 0, 1);
+        const n = 10;
+        t = p.pow(t, n);
+        const localAmp = p.lerp(effectWaveAmp, defaultWaveAmp, t);
+        const y =
+          localAmp *
             p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) +
           j;
-        /**
-         * ポイント2. マウス操作によるエフェクトの変化：距離
-         */
-        const mouseDist = p.dist(p.mouseX, p.mouseY, x, y);
-        if (mouseDist < threshold) {
-          y =
-            effectWaveAmp *
-              p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) +
-            j;
-        }
         p.vertex(x, y);
       }
       p.endShape();
@@ -76,7 +77,6 @@ const sketch = (p: p5) => {
     // キャンバスや閾値の初期化
     const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
     canvas.parent("canvas-container");
-    p.noCursor();
     p.strokeCap(p.ROUND);
     mouseDistThreshold = p.constrain(
       p.windowWidth / 6,
@@ -88,9 +88,9 @@ const sketch = (p: p5) => {
     // 色の設定
     textEdgeCol = p.color(255);
     textCol = p.color(180, 200);
-    drawCol = p.color(50, 0, 200, 40);
-    cursorCol = p.color(255, 0, 0, 255);
-    bgCol = p.color(0, 0, 0, 8);
+    drawCol = p.color(50, 50, 200, 40);
+    bgCol = p.color(0, 8);
+    cursorCol = p.color(200);
 
     // テキストのスタイル設定
     const currentTextSize = p.constrain(
@@ -124,9 +124,29 @@ const sketch = (p: p5) => {
     /**
      * ポイント2. マウス操作によるエフェクトの変化：カーソル
      */
+    // マウスストーカーの太さをカーソルの移動量に合わせて調整
     p.stroke(cursorCol);
-    p.strokeWeight(2);
-    p.line(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+    const d = p.dist(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+    const sw = p.lerp(1, d / 10, 0.2);
+    p.strokeWeight(sw);
+
+    // マウスストーカーを遅らせる
+    stalkerPos.x = p.lerp(stalkerPos.x, p.mouseX, 0.2);
+    stalkerPos.y = p.lerp(stalkerPos.y, p.mouseY, 0.2);
+
+    // 過去4フレーム分のマウスストーカーの位置を保存して曲線で描画
+    mousePosAry.push(stalkerPos.copy());
+    if (mousePosAry.length > 4) {
+      mousePosAry.shift();
+    }
+
+    // マウスストーカーの描画
+    p.noFill();
+    p.beginShape();
+    for (const pos of mousePosAry) {
+      p.curveVertex(pos.x, pos.y);
+    }
+    p.endShape();
   };
 
   /**
