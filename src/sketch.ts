@@ -56,15 +56,17 @@ const sketch = (p: p5) => {
       for (let i = 0; i < p.width; i += step / 4) {
         const x = i;
         const phaseDelay = (i + j) / 2;
-        // マウスと基線の距離
-        const d = p.dist(p.mouseX, p.mouseY, x, j);
-        // 距離に応じて振幅を変化
-        let t = p.constrain(d / threshold, 0, 1);
-        const n = 10;
-        t = p.pow(t, n);
-        const localAmp = p.lerp(effectWaveAmp, defaultWaveAmp, t);
+        // マウスと基点のを求める
+        const distance = p.dist(p.mouseX, p.mouseY, x, j);
+        // 距離を 0〜1 の範囲に正規化
+        let normalized = p.constrain(distance / threshold, 0, 1);
+        // 補間のメリハリを強調
+        const EMPHASIS = 10;
+        const weight = p.pow(normalized, EMPHASIS);
+        // 距離に応じて振幅を線形補間
+        const amplitude = p.lerp(effectWaveAmp, defaultWaveAmp, weight);
         const y =
-          localAmp *
+          amplitude *
             p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) +
           j;
         p.vertex(x, y);
