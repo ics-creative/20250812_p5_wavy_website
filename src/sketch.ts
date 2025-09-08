@@ -41,6 +41,7 @@ const sketch = (p: p5) => {
   /**
    * ポイント1. 三角関数を使った周期的なアニメーション
    */
+
   const drawWave = (
     step: number,
     threshold: number,
@@ -48,26 +49,26 @@ const sketch = (p: p5) => {
     effectWaveAmp: number,
   ) => {
     const ANIMATION_SPEED_RATIO = 0.02;
-
     // stepずつy軸の方向に走査
-    for (let j = 0; j < p.height; j += step) {
+    for (let j = 0; j <= p.height; j += step) {
       p.beginShape();
       // step/4ずつx軸の正方向に走査
-      for (let i = 0; i < p.width; i += step / 4) {
+      for (let i = 0; i <= p.width; i += step / 4) {
         const x = i;
         const phaseDelay = (i + j) / 2;
-        // マウスと基点のを求める
-        const distance = p.dist(p.mouseX, p.mouseY, x, j);
-        // 距離を 0〜1 の範囲に正規化
-        let normalized = p.constrain(distance / threshold, 0, 1);
-        // 補間のメリハリを強調
-        const EMPHASIS = 10;
-        const weight = p.pow(normalized, EMPHASIS);
-        // 距離に応じて振幅を線形補間
-        const amplitude = p.lerp(effectWaveAmp, defaultWaveAmp, weight);
+        // マウスと波の頂点間の距離を求める
+        const mouseDist = p.dist(p.mouseX, p.mouseY, x, j);
+        // distanceがthreshold未満の場合に振幅を変化させる
+        let waveAmp;
+        if (mouseDist < threshold) {
+          let normalized = p.constrain(mouseDist / threshold, 0, 1);
+          const weight = p.pow(normalized, 10);
+          waveAmp = p.lerp(effectWaveAmp, defaultWaveAmp, weight);
+        } else {
+          waveAmp = defaultWaveAmp;
+        }
         const y =
-          amplitude *
-            p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) +
+          waveAmp * p.sin((p.frameCount - phaseDelay) * ANIMATION_SPEED_RATIO) +
           j;
         p.vertex(x, y);
       }
@@ -89,7 +90,7 @@ const sketch = (p: p5) => {
 
     // 色の設定
     textEdgeCol = p.color(255);
-    textCol = p.color(180, 200);
+    textCol = p.color(0, 20);
     drawCol = p.color(50, 50, 200, 40);
     bgCol = p.color(0, 8);
     cursorCol = p.color(200);
