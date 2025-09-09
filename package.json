@@ -1,11 +1,11 @@
 {
-  "name": "20250812_p5_wavy_website",
+  "name": "20250909_p5_wavy_website",
   "private": true,
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host",
     "typecheck": "tsc --noEmit",
     "format": "npx @biomejs/biome format --write src"
   },

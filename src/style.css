@@ -67,3 +67,17 @@ body {
     -webkit-user-select: none;
   }
 }
+
+@media (max-width: 767px) {
+  .header {
+    padding: 12px;
+  }
+
+  .header-title {
+    font-size: 18px;
+  }
+
+  .navigation__link {
+    font-size: 12px;
+  }
+}
