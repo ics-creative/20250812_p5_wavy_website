@@ -53,7 +53,7 @@ const sketch = (p: p5) => {
     for (let j = 0; j <= p.height; j += step) {
       p.beginShape();
       // step/4ずつx軸の正方向に走査
-      for (let i = 0; i <= p.width; i += step / 4) {
+      for (let i = 0; i < p.width + step; i += step / 4) {
         const x = i;
         const phaseDelay = (i + j) / 2;
         // マウスと波の頂点間の距離を求める
